@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -48,15 +49,15 @@ public class BasicSeleniumTest {
         Assertions.assertTrue(actualResult >= 1
                 ,"ERROR The project was not created");
 
-        nameProject="Update"+new Date().getTime();
+        String updateProject="Update"+new Date().getTime();
         // update project
         driver.findElement(By.xpath("//div[contains(@style,'block')]/img")).click();
         driver.findElement(By.xpath("//ul[@id=\"projectContextMenu\"]//a[text()='Edit']")).click();
         driver.findElement(By.xpath("//td/div/input[@id='ItemEditTextbox']")).clear();
-        driver.findElement(By.xpath("//td/div/input[@id='ItemEditTextbox']")).sendKeys(nameProject);
+        driver.findElement(By.xpath("//td/div/input[@id='ItemEditTextbox']")).sendKeys(updateProject);
         driver.findElement(By.xpath("//td/div/img[@id='ItemEditSubmit']")).click();
         Thread.sleep(1000);
-        actualResult=driver.findElements(By.xpath(" //td[text()='"+nameProject+"'] ")).size();
+        actualResult=driver.findElements(By.xpath(" //td[text()='"+updateProject+"'] ")).size();
         Assertions.assertTrue(actualResult >= 1
                 ,"ERROR The project was not updated");
 
@@ -71,22 +72,27 @@ public class BasicSeleniumTest {
         Assertions.assertTrue(actualResult >= 1 ,"ERROR task was not created");
 
         //update task
-        nameTask="UpdatedTask"+new Date().getTime();
-        driver.findElement(By.xpath(("//img[contains(@style,'inline')]"))).click();
-        driver.findElement(By.xpath("//ul[@id=\"itemContextMenu\"]//a[text()='Edit']")).click();
+        String updatedTask="UpdatedTask"+new Date().getTime();
+        driver.findElement(By.xpath(("//div[contains(text(),'"+nameTask+"') and @class='ItemContentDiv']"))).click();
+        driver.findElement(By.xpath("//textarea[@id='ItemEditTextbox' and @style]")).clear();
+        driver.findElement(By.xpath("//textarea[@id='ItemEditTextbox' and @style]")).sendKeys(updatedTask);
+        driver.findElement(By.xpath("//textarea[@id='ItemEditTextbox' and @style]")).sendKeys(Keys.RETURN);
 
-
+        Thread.sleep(1000);
+        actualResult=driver.findElements(By.xpath("//div[contains(text(),'"+updatedTask+"') and @class='ItemContentDiv']")).size();
+        Assertions.assertTrue(actualResult >= 1 ,"ERROR task was not created");
 
 
 
         // delete project
-        /*driver.findElement(By.xpath("//div[contains(@style,'block')]/img")).click();
+        driver.findElement(By.xpath("//td[text()='"+updateProject+"']")).click();
+        driver.findElement(By.xpath("//div[@style='display: block;']/img")).click();
         driver.findElement(By.id("ProjShareMenuDel")).click();
         driver.switchTo().alert().accept();
         Thread.sleep(1000);
-        actualResult=driver.findElements(By.xpath(" //[text()='"+nameProject+"'] ")).size();
+        actualResult=driver.findElements(By.xpath("//td[text()='"+updateProject+"'] ")).size();
         Assertions.assertTrue(actualResult == 0
-                ,"ERROR The project was not removed");*/
+                ,"ERROR The project was not removed");
 
     }
 }
